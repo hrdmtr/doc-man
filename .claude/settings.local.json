@@ -14,7 +14,11 @@
       "Bash(git push)",
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat: PDF解析機能実装\n\n- PDFパーサー（pdf-parse）\n- ドキュメントタイプ分類（請求書/領収書判定）\n- データ抽出機能\n  - 請求書: 宛先、件名、発行日、請求書番号、金額\n  - 領収書: 発行元、領収日、金額\n- 日本語・英語パターン対応\n- 信頼度スコア付き複数候補抽出\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
       "Bash(git commit -m \"$(cat <<''EOF''\nfeat: API Routes実装完了\n\n実装したエンドポイント：\n- POST /api/documents/upload - PDFアップロード、GCS保存、重複チェック\n- POST /api/documents/[id]/parse - PDF解析、分類、データ抽出\n- POST /api/documents/[id]/confirm - タグ確定、保存\n- GET /api/documents - ドキュメント検索（フィルタ、日付範囲）\n- GET /api/documents/[id] - 詳細取得、抽出結果、監査ログ\n- GET /api/documents/[id]/download - 署名URL生成\n\n機能：\n- バリデーション（ファイル形式、サイズ）\n- エラーハンドリング\n- 監査ログ自動記録\n- ステータス管理\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
-      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: テストページとセットアップ手順書追加\n\n- API動作確認用のテストページ (/test)\n  - PDFアップロード機能テスト\n  - PDF解析機能テスト\n  - ドキュメント詳細取得テスト\n  - 検索機能テスト\n- 詳細なセットアップ手順書（SETUP.md）\n  - Supabaseプロジェクト作成手順\n  - GCS設定手順\n  - 環境変数設定方法\n  - トラブルシューティング\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: テストページとセットアップ手順書追加\n\n- API動作確認用のテストページ (/test)\n  - PDFアップロード機能テスト\n  - PDF解析機能テスト\n  - ドキュメント詳細取得テスト\n  - 検索機能テスト\n- 詳細なセットアップ手順書（SETUP.md）\n  - Supabaseプロジェクト作成手順\n  - GCS設定手順\n  - 環境変数設定方法\n  - トラブルシューティング\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(curl http://localhost:3000)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfix: 環境変数未設定時のエラーを修正\n\n- Supabaseクライアント初期化を環境変数なしでも可能に\n- GCSクライアント初期化を環境変数なしでも可能に\n- 開発時に環境変数未設定でもサーバー起動できるように改善\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
