@@ -8,7 +8,10 @@
       "Bash(git push -u origin feature/project-foundation)",
       "Bash(npm install)",
       "Bash(npm run dev)",
-      "Bash(git add -A)"
+      "Bash(git add -A)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Next.jsプロジェクトとSupabase設定完了\n\n- Next.js 15 + TypeScript + Tailwind CSSの基本セットアップ\n- Supabaseクライアント設定（client/server分離）\n- データベーススキーマ定義（documents, extraction_results, audit_logs）\n- TypeScript型定義ファイル作成\n- Row Level Security (RLS) ポリシー設定\n- 環境変数テンプレート(.env.example)追加\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Google Cloud Storage連携実装\n\n- GCSクライアント設定\n- PDFアップロード機能\n- 署名URL生成機能\n- ファイル削除・ダウンロード機能\n- セットアップ手順書追加\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
