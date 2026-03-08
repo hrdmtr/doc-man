@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --app --no-src-dir --import-alias \"@/*\" --use-npm)",
+      "Bash(git add ARCHITECTURE.md 要件定義.md package.json tsconfig.json next.config.ts tailwind.config.ts README.md)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: プロジェクトセットアップとアーキテクチャ設計\n\n- Next.js + TypeScript + Tailwind CSSのプロジェクト構成\n- アーキテクチャ設計書（ARCHITECTURE.md）追加\n  - 技術スタック: Next.js + Supabase + GCS\n  - データフロー、DBスキーマ、コスト見積もり含む\n- 要件定義書追加\n- 開発段階: 完全無料構成（Supabase Free + Vercel Hobby + GCS無料枠）\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git checkout -b feature/project-foundation)",
+      "Bash(git push -u origin feature/project-foundation)",
+      "Bash(npm install)",
+      "Bash(npm run dev)",
+      "Bash(git add -A)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
