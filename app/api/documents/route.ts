@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/server';
+import { Database } from '@/lib/supabase/database.types';
 
 export const runtime = 'nodejs';
+
+type DocumentStatus = Database['public']['Tables']['documents']['Row']['status'];
+type DocType = Database['public']['Tables']['documents']['Row']['doc_type'];
 
 /**
  * GET /api/documents
@@ -17,7 +21,7 @@ export async function GET(request: NextRequest) {
     const dateFrom = searchParams.get('date_from');
     const dateTo = searchParams.get('date_to');
     const subject = searchParams.get('subject');
-    const status = searchParams.get('status') || 'stored';
+    const status = (searchParams.get('status') || 'stored') as DocumentStatus;
 
     // クエリ構築
     let query = supabaseAdmin
@@ -26,7 +30,7 @@ export async function GET(request: NextRequest) {
       .eq('status', status);
 
     if (docType) {
-      query = query.eq('doc_type', docType);
+      query = query.eq('doc_type', docType as DocType);
     }
 
     if (counterparty) {

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/server';
+import { Database } from '@/lib/supabase/database.types';
+
+type DocumentUpdate = Database['public']['Tables']['documents']['Update'];
 
 export const runtime = 'nodejs';
 
@@ -9,10 +12,10 @@ export const runtime = 'nodejs';
  */
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
 
     // ドキュメント取得
@@ -51,7 +54,7 @@ export async function POST(
     }
 
     // ドキュメント更新
-    const updateData: any = {
+    const updateData: DocumentUpdate = {
       status: 'stored',
     };
 

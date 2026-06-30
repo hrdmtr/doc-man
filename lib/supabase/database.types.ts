@@ -76,6 +76,7 @@ export interface Database {
           created_at?: string
           updated_at?: string
         }
+        Relationships: []
       }
       extraction_results: {
         Row: {
@@ -105,6 +106,15 @@ export interface Database {
           source?: 'pdf_text' | 'ocr' | null
           created_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "extraction_results_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       audit_logs: {
         Row: {
@@ -131,7 +141,28 @@ export interface Database {
           timestamp?: string
           metadata?: Json | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "audit_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          }
+        ]
       }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      [_ in never]: never
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }

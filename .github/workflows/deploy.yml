@@ -1,0 +1,64 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - feature/project-foundation
+
+jobs:
+  build-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install canvas native build dependencies
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint --if-present
+        continue-on-error: true
+
+      - name: Build check (type-check + compile)
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+  deploy:
+    needs: build-check
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/feature/project-foundation'
+
+    steps:
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.VPS_DEPLOY_PATH }}
+            git fetch origin feature/project-foundation
+            git reset --hard origin/feature/project-foundation
+            docker compose up -d --build
+
+  notify:
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: success()
+
+    steps:
+      - name: Deployment successful
+        run: echo "✅ Deployment to VPS completed successfully"
