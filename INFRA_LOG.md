@@ -119,16 +119,17 @@ VPS上で`docker build`→コンテナ起動→`curl`で200確認まで完了（
 
 14. `docker-compose.yml`作成（`NEXT_PUBLIC_*`をbuild argsで渡し、`.env`をruntime環境変数として読み込む構成）。`docker compose config`で変数展開を確認、`docker compose up -d --build`で起動し`127.0.0.1:3001`が200を返すことを確認（プレースホルダー値でのテスト）
 15. 「環境情報」セクションを追加。VPS上のデプロイ先パスを`/var/www/doc-man`に確定（ラーメンサイトの`/var/www/heisei-ramen`と同じ規則）
+16. GitHub Actions デプロイワークフロー（`.github/workflows/deploy.yml`）作成・push。`build-check` → `deploy`（appleboy/ssh-action経由でVPS上のgit pull + docker compose up）の2ジョブ構成
+17. `doc_man_actions`鍵をVPS `authorized_keys`に追加。GitHub Secretsに`VPS_HOST`/`VPS_USER`/`VPS_SSH_KEY`/`VPS_DEPLOY_PATH`/`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_ANON_KEY`を設定
+18. Supabaseプロジェクト作成（`vaifxiuazoickqildzhg`）。`supabase/schema.sql`を適用済み。VPS上の`.env`に実認証情報を配置
+19. Actions初回デプロイ成功（2026-07-01）。`https://doc-man.mh-gk.com/`で200確認済み
 
 ## 既知の未対応事項
 
-- ストレージ方式（GCS→ローカルディスク）のコード変更は未着手。現在のDockerfileは元のGCSベースのコードでビルドが通る状態
-- 実際のSupabase/GCS認証情報はまだ用意されていない（`.env.local`が存在しない）。本番デプロイ前にSupabaseプロジェクト作成・スキーマ適用が必要（SETUP.md参照）
-- VPS上の`/tmp/doc-man-test`は検証用の手動転送ディレクトリ。本番はGitHub Actions経由のデプロイになるため不要、後で削除する
+- ストレージ方式（GCS→ローカルディスク）のコード変更は未着手。VPS上の`.env`にGCS系はプレースホルダー値が入っている状態。GCS機能を使うAPIは現状エラーになる
+- VPS上の`/tmp/doc-man-test`は検証用の手動転送ディレクトリ。後で削除する
 
 ## 次のステップ
 
 1. ストレージをGCSからローカルディスクに切り替えるコード変更（lib/gcs配下）
 2. PDFバックアップスクリプト作成
-3. GitHub Actionsデプロイワークフロー作成
-4. 実際のSupabaseプロジェクトをセットアップし、本番`.env`をVPSに配置

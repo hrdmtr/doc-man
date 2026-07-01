@@ -81,7 +81,7 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
-CREATE TRIGGER update_documents_updated_at BEFORE UPDATE ON documents
+CREATE OR REPLACE TRIGGER update_documents_updated_at BEFORE UPDATE ON documents
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- Row Level Security (RLS) ポリシー
@@ -90,16 +90,20 @@ ALTER TABLE extraction_results ENABLE ROW LEVEL SECURITY;
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
 -- ドキュメント: ログインユーザーのみ読み書き可能
+DROP POLICY IF EXISTS "Users can view their own documents" ON documents;
 CREATE POLICY "Users can view their own documents" ON documents
   FOR SELECT USING (auth.uid() = created_by OR auth.uid() IS NOT NULL);
 
+DROP POLICY IF EXISTS "Users can insert their own documents" ON documents;
 CREATE POLICY "Users can insert their own documents" ON documents
   FOR INSERT WITH CHECK (auth.uid() = created_by OR auth.uid() IS NOT NULL);
 
+DROP POLICY IF EXISTS "Users can update their own documents" ON documents;
 CREATE POLICY "Users can update their own documents" ON documents
   FOR UPDATE USING (auth.uid() = created_by OR auth.uid() IS NOT NULL);
 
 -- 抽出結果: 対応するドキュメントの所有者のみアクセス可能
+DROP POLICY IF EXISTS "Users can view extraction results for their documents" ON extraction_results;
 CREATE POLICY "Users can view extraction results for their documents" ON extraction_results
   FOR SELECT USING (
     EXISTS (
@@ -109,6 +113,7 @@ CREATE POLICY "Users can view extraction results for their documents" ON extract
     )
   );
 
+DROP POLICY IF EXISTS "Users can insert extraction results for their documents" ON extraction_results;
 CREATE POLICY "Users can insert extraction results for their documents" ON extraction_results
   FOR INSERT WITH CHECK (
     EXISTS (
@@ -119,6 +124,7 @@ CREATE POLICY "Users can insert extraction results for their documents" ON extra
   );
 
 -- 監査ログ: 読み取り専用（システムが自動記録）
+DROP POLICY IF EXISTS "Users can view audit logs for their documents" ON audit_logs;
 CREATE POLICY "Users can view audit logs for their documents" ON audit_logs
   FOR SELECT USING (
     EXISTS (
