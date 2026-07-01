@@ -18,9 +18,28 @@
       "Bash(curl http://localhost:3000)",
       "Bash(pkill -f \"next dev\")",
       "Bash(curl -s http://localhost:3000)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nfix: 環境変数未設定時のエラーを修正\n\n- Supabaseクライアント初期化を環境変数なしでも可能に\n- GCSクライアント初期化を環境変数なしでも可能に\n- 開発時に環境変数未設定でもサーバー起動できるように改善\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nfix: 環境変数未設定時のエラーを修正\n\n- Supabaseクライアント初期化を環境変数なしでも可能に\n- GCSクライアント初期化を環境変数なしでも可能に\n- 開発時に環境変数未設定でもサーバー起動できるように改善\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git -C \"c:\\\\Users\\\\user\\\\repos\\\\doc-man\" log --oneline -20)",
+      "Bash(git -C \"c:\\\\Users\\\\user\\\\repos\\\\doc-man\" status)",
+      "Bash(git -C \"c:\\\\Users\\\\user\\\\repos\\\\doc-man\" branch -a)",
+      "Bash(ls -la ~/.ssh 2>&1)",
+      "Read(//c/Users/user/.ssh/**)",
+      "Bash(ssh-keygen -t ed25519 -f ~/.ssh/doc_man_vps -N \"\" -C \"doc-man-claude-interactive\")",
+      "Bash(ssh-keygen -t ed25519 -f ~/.ssh/doc_man_actions -N \"\" -C \"doc-man-github-actions\")",
+      "Bash(find ~/repos/website -maxdepth 2 -iname \"*.yml\" -o -maxdepth 2 -iname \"*.yaml\" 2>&1 | head -20; echo \"---\"; find ~/repos/website -maxdepth 3 -path \"*/.github/workflows/*\" 2>&1)",
+      "Read(//c/Users/user/repos/website/**)",
+      "Bash(ssh -i ~/.ssh/heisei_ramen_vps -o BatchMode=yes deploy@ik1-416-40291.vs.sakura.ne.jp 'mkdir -p ~/.ssh && echo '\\\\''__CMDSUB_OUTPUT__'\\\\'' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && echo '\\\\''done'\\\\''')",
+      "Bash(ssh -i ~/.ssh/heisei_ramen_vps -o BatchMode=yes -o ConnectTimeout=5 rocky@ik1-416-40291.vs.sakura.ne.jp \"echo OK && whoami && cat ~/.ssh/authorized_keys 2>/dev/null | wc -l\")",
+      "Bash(ssh -i ~/.ssh/heisei_ramen_vps -o BatchMode=yes rocky@ik1-416-40291.vs.sakura.ne.jp 'grep -qF \"__CMDSUB_OUTPUT__\" ~/.ssh/authorized_keys 2>/dev/null && echo '\\\\''already present'\\\\'' || \\(echo \"__CMDSUB_OUTPUT__\" >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys && echo '\\\\''added'\\\\''\\)')",
+      "Bash(ssh -i ~/.ssh/doc_man_vps -o BatchMode=yes -o ConnectTimeout=5 rocky@ik1-416-40291.vs.sakura.ne.jp \"echo 'doc-man key works' && hostname && cat /etc/os-release | grep PRETTY\")",
+      "Bash(nslookup doc-man.mh-gk.com)",
+      "Bash(ssh -i ~/.ssh/doc_man_vps -o BatchMode=yes rocky@ik1-416-40291.vs.sakura.ne.jp \"curl -s -4 ifconfig.me || curl -s -4 https://api.ipify.org\")",
+      "Bash(ssh -i ~/.ssh/doc_man_vps -o BatchMode=yes rocky@ik1-416-40291.vs.sakura.ne.jp \"echo '--- docker ---'; which docker 2>&1; docker --version 2>&1; echo '--- docker compose ---'; docker compose version 2>&1; echo '--- caddy ---'; which caddy 2>&1; echo '--- nginx ---'; which nginx 2>&1; systemctl is-active nginx 2>&1; echo '--- listening ports ---'; sudo ss -tlnp 2>&1 || ss -tln 2>&1; echo '--- disk ---'; df -h / 2>&1; echo '--- memory ---'; free -h 2>&1\")"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "additionalDirectories": [
+      "c:\\Users\\user\\repos\\website"
+    ]
   }
 }
