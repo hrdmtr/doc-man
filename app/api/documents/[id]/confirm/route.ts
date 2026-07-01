@@ -32,8 +32,8 @@ export async function POST(
       );
     }
 
-    // バリデーション
-    const { doc_type } = document;
+    // フォームから doc_type が指定されていれば優先（手動選択時）
+    const doc_type = (body.doc_type as string) || document.doc_type;
 
     if (doc_type === 'invoice_issued') {
       // 請求書の必須フィールド
@@ -56,6 +56,7 @@ export async function POST(
     // ドキュメント更新
     const updateData: DocumentUpdate = {
       status: 'stored',
+      doc_type: doc_type as 'invoice_issued' | 'receipt',
     };
 
     if (doc_type === 'invoice_issued') {

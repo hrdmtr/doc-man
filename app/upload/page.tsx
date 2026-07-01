@@ -59,7 +59,13 @@ export default function UploadPage() {
       const parseData = await parseRes.json();
 
       if (!parseRes.ok) {
-        setErrorMessage(parseData.error || '解析に失敗しました。手動で入力してください。');
+        // 分類失敗(422)はアップロード済みなので確認画面で手動入力へ
+        if (parseRes.status === 422) {
+          setStep('done');
+          router.push(`/documents/${documentId}/confirm?manual=true`);
+          return;
+        }
+        setErrorMessage(parseData.error || '解析に失敗しました');
         setStep('error');
         return;
       }
