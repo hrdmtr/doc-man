@@ -31,12 +31,13 @@ export async function POST(
       );
     }
 
-    if (document.status === 'parsed' || document.status === 'stored') {
+    if (document.status === 'stored') {
       return NextResponse.json(
-        { error: 'Document already parsed' },
+        { error: 'Document already confirmed' },
         { status: 400 }
       );
     }
+    // needs_input / failed / uploaded は再解析可能
 
     // GCSからPDFダウンロード
     let pdfBuffer: Buffer;
@@ -80,6 +81,10 @@ export async function POST(
     const classification = classifyDocumentType(parsedData);
 
     if (classification.docType === 'unknown') {
+      await supabaseAdmin
+        .from('documents')
+        .update({ status: 'needs_input' })
+        .eq('id', id);
       return NextResponse.json(
         { error: 'Unable to classify document type. Please specify manually.' },
         { status: 422 }

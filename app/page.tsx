@@ -25,9 +25,16 @@ const DOC_TYPE_LABEL: Record<string, string> = {
 
 const STATUS_LABEL: Record<string, string> = {
   uploaded: 'アップロード済み',
-  parsed: '解析済み',
-  needs_input: '入力待ち',
-  failed: 'エラー',
+  parsed: '解析済み・確認待ち',
+  needs_input: '分類失敗・手動入力待ち',
+  failed: '解析エラー',
+};
+
+const STATUS_COLOR: Record<string, string> = {
+  uploaded: 'bg-gray-100 text-gray-600',
+  parsed: 'bg-blue-50 text-blue-700',
+  needs_input: 'bg-amber-50 text-amber-700',
+  failed: 'bg-red-50 text-red-600',
 };
 
 type Tab = 'stored' | 'inbox';
@@ -37,10 +44,18 @@ export default function HomePage() {
   const [docs, setDocs] = useState<Doc[]>([]);
   const [inboxDocs, setInboxDocs] = useState<Doc[]>([]);
   const [loading, setLoading] = useState(true);
+  const [reparsingId, setReparsingId] = useState<string | null>(null);
   const [docType, setDocType] = useState('');
   const [keyword, setKeyword] = useState('');
   const [dateFrom, setDateFrom] = useState('');
   const [dateTo, setDateTo] = useState('');
+
+  const handleReparse = async (docId: string) => {
+    setReparsingId(docId);
+    await fetch(`/api/documents/${docId}/parse`, { method: 'POST' });
+    await fetchInbox();
+    setReparsingId(null);
+  };
 
   const fetchInbox = useCallback(async () => {
     const results = await Promise.all(
@@ -187,9 +202,7 @@ export default function HomePage() {
                     </td>
                     <td className="px-4 py-3">
                       <span className={`inline-block text-xs px-2 py-0.5 rounded-full font-medium ${
-                        doc.status === 'failed'
-                          ? 'bg-red-50 text-red-600'
-                          : 'bg-amber-50 text-amber-700'
+                        STATUS_COLOR[doc.status] ?? 'bg-gray-100 text-gray-600'
                       }`}>
                         {STATUS_LABEL[doc.status] ?? doc.status}
                       </span>
@@ -197,7 +210,16 @@ export default function HomePage() {
                     <td className="px-4 py-3 text-gray-500 text-xs">
                       {new Date(doc.created_at).toLocaleString('ja-JP')}
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-4 py-3 text-right flex gap-2 justify-end">
+                      {(doc.status === 'failed' || doc.status === 'needs_input') && (
+                        <button
+                          onClick={() => handleReparse(doc.id)}
+                          disabled={reparsingId === doc.id}
+                          className="text-xs text-gray-500 hover:text-gray-700 border border-gray-300 px-2 py-0.5 rounded disabled:opacity-50"
+                        >
+                          {reparsingId === doc.id ? '解析中...' : '再解析'}
+                        </button>
+                      )}
                       <Link
                         href={`/documents/${doc.id}/confirm`}
                         className="text-xs text-blue-600 hover:underline"
