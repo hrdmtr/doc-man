@@ -57,8 +57,11 @@ export default function DocumentDetailPage() {
     setDownloading(true);
     const res = await fetch(`/api/documents/${id}/download`);
     const data = await res.json();
-    if (data.url) {
-      window.open(data.url, '_blank');
+    if (data.signedUrl) {
+      const a = document.createElement('a');
+      a.href = data.signedUrl;
+      a.download = data.filename ?? 'document.pdf';
+      a.click();
     }
     setDownloading(false);
   };
